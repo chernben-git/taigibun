@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-Hant"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台語文創意園區 AI 導覽</title>
+<meta name="description" content="台語文創意園區、各場館、台語家庭、咱兜的台語 LINE、台語 AI 自動化演示 —— 全程台語語音導覽">
+<style>
+:root{--g:#1f6b3a;--g2:#e7f2ea;--brick:#a5452f;--gold:#c9a24a;--ink:#1d2433;--cream:#faf6ee;--card:#fff;--muted:#5d6470}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;font-size:20px;line-height:1.6}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.top .home{background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:12px;padding:6px 14px;font-size:18px}
+.top .name{font-weight:700;font-size:22px;letter-spacing:1px}
+.top .name small{display:block;font-size:13px;font-weight:400;opacity:.85;letter-spacing:0}
+.top .badge{margin-left:auto;background:var(--gold);color:#3a2a00;border-radius:999px;padding:4px 14px;font-size:16px;font-weight:700;white-space:nowrap}
+main{max-width:1180px;margin:0 auto;padding:0 18px 40px}
+.page{display:none}.page.on{display:block}
+/* hero */
+.hero{position:relative;margin:18px 0;border-radius:22px;overflow:hidden;min-height:360px;background:#123 url(img/hero.jpg) center/cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,20,12,.82),rgba(8,20,12,.35) 60%,rgba(8,20,12,.1))}
+.hero .in{position:relative;z-index:1;padding:44px 40px;color:#fff;max-width:640px}
+.hero h1{margin:0 0 6px;font-size:46px;line-height:1.2}
+.hero .tl{font-size:18px;opacity:.85;letter-spacing:1px}
+.hero .sub{margin-top:14px;font-size:24px;color:#ffe08a;font-weight:700}
+.hero .sub2{font-size:19px;opacity:.95}
+.hero .play{margin-top:22px}
+/* buttons */
+.btn{border:0;border-radius:14px;padding:12px 22px;font-weight:700;font-size:20px}
+.btn.g{background:var(--g);color:#fff}.btn.y{background:var(--gold);color:#2f2200}.btn.w{background:#fff;color:var(--g)}.btn.o{background:transparent;border:2px solid var(--g);color:var(--g)}
+.btn .ic{display:inline-block;margin-right:6px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;margin:8px 0 24px}
+.tile{display:flex;gap:16px;align-items:center;text-align:left;border:0;background:var(--card);border-radius:18px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);transition:transform .15s}
+.tile:active,.tile:hover{transform:translateY(-2px)}
+.tile .em{flex:none;width:68px;height:68px;border-radius:18px;display:grid;place-items:center;font-size:36px;background:var(--g2)}
+.tile b{display:block;font-size:23px}
+.tile span{color:var(--muted);font-size:16px}
+.ev{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;background:#fff3d6;border:2px solid var(--gold);border-radius:18px;padding:16px 20px;margin-bottom:24px}
+.ev b{font-size:22px;color:var(--brick)}
+/* section pages */
+.ph{position:relative;margin:18px 0 10px;border-radius:20px;overflow:hidden;background:var(--g)}
+.ph .bg{height:200px;background:center/cover}
+.ph h2{position:absolute;left:0;right:0;bottom:0;margin:0;padding:40px 24px 16px;color:#fff;font-size:34px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.lines{background:var(--card);border-radius:18px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.ln{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:12px;padding:12px 14px;font-size:23px;line-height:1.6;color:var(--ink)}
+.ln:hover{background:#f3f7f4}
+.ln.on{background:#fff3c4;box-shadow:inset 5px 0 0 var(--gold)}
+.note{color:var(--muted);font-size:15px;margin:8px 4px}
+/* venues */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.vc{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;flex-direction:column}
+.vc .im{height:190px;background:var(--g2) center/cover;display:grid;place-items:center;color:var(--g);font-size:22px;font-weight:700}
+.vc .bd{padding:14px 16px;flex:1}
+.vc h3{margin:0 0 4px;font-size:23px;color:var(--g)}
+.vc p{margin:0;font-size:18px}
+.vc .ft{padding:0 16px 14px}
+.vc.on{outline:4px solid var(--gold)}
+/* info boxes */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:16px 0}
+.box{background:var(--card);border-radius:18px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.box h3{margin:0 0 8px;color:var(--g);font-size:22px}
+.code{font-family:Consolas,monospace;font-size:52px;font-weight:700;letter-spacing:6px;color:var(--brick);text-align:center;background:#fff7e0;border:3px dashed var(--gold);border-radius:16px;padding:6px}
+.steps{margin:0;padding-left:1.3em}.steps li{margin:6px 0}
+.qr{display:block;width:100%;max-width:300px;margin:0 auto;border-radius:12px}
+table.pt{width:100%;border-collapse:collapse;font-size:18px}
+table.pt td,table.pt th{border-bottom:1px solid #e3e6e1;padding:8px 6px;text-align:left}
+/* videos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.vd{border:0;padding:0;text-align:left;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.vd .th{height:170px;background:#0d2b1a center/cover;display:grid;place-items:center;font-size:58px;color:#fff}
+.vd .bd{padding:12px 16px}.vd b{display:block;font-size:20px}.vd span{color:var(--muted);font-size:15px}
+#vmodal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+#vmodal video{max-width:96vw;max-height:84vh;border-radius:10px;background:#000}
+.vc .im{position:relative;cursor:pointer}
+.vc .im .cnt{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;font-size:15px;font-weight:600;padding:3px 10px;border-radius:999px}
+#pmodal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+#pmodal img{max-width:94vw;max-height:78vh;border-radius:10px;object-fit:contain}
+#pmodal .cap{color:#fff;font-size:20px}
+#pmodal .row{display:flex;gap:12px}
+/* talk */
+.talk{display:grid;grid-template-columns:minmax(260px,1fr) 1.3fr;gap:18px;margin-top:16px}
+.qs{display:flex;flex-direction:column;gap:10px}
+.q{border:0;text-align:left;background:var(--card);border-radius:14px;padding:14px 16px;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q.on{background:var(--g);color:#fff}
+.ai{position:sticky;top:84px;align-self:start;background:var(--card);border-radius:22px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.ai .face{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.ai .av{width:74px;height:74px;border-radius:50%;background:var(--g);display:grid;place-items:center;color:#fff;font-size:30px;font-weight:700}
+.ai .av.talking{animation:pulse 0.8s infinite alternate}
+@keyframes pulse{from{box-shadow:0 0 0 0 rgba(31,107,58,.5)}to{box-shadow:0 0 0 14px rgba(31,107,58,0)}}
+.ai .bubble{background:var(--g2);border-radius:18px;padding:18px;font-size:25px;min-height:120px}
+.ai .hint{color:var(--muted);font-size:16px;margin-top:10px}
+footer{margin-top:30px;padding:18px;border-top:1px solid #e2ddd0;color:var(--muted);font-size:15px;text-align:center}
+@media (max-width:760px){
+ body{font-size:18px}.top{gap:8px;padding:8px 12px}.top .home{white-space:nowrap;padding:6px 10px;font-size:16px}.top .name{font-size:18px}.top .name small{display:none}.top .badge{font-size:13px;padding:3px 10px}
+ .hero{min-height:300px}.hero .in{padding:28px 20px}.hero h1{font-size:32px}.hero .sub{font-size:20px}
+ .ln{font-size:20px}.talk{grid-template-columns:1fr}.ai{position:static}.ph h2{font-size:26px}.code{font-size:40px}
+}
+</style>
+</head><body>
+<header class="top">
+  <button class="home" onclick="go('home')" aria-label="回首頁">⌂ 首頁</button>
+  <div class="name">台語文創意園區<small>Tâi-gí-bûn Tshòng-ì Hn̂g-khu｜AI 台語導覽</small></div>
+  <div class="badge">12/5 院兜講台語</div>
+</header>
+<main>
+
+<!-- HOME -->
+<section class="page" id="p-home">
+  <div class="hero"><div class="in">
+    <h1>台語文創意園區</h1>
+    <div class="tl">彰化市八卦山｜台灣唯一的台語文園區</div>
+    <div class="sub">迎接 AI 台語新時代</div>
+    <div class="sub2">AI 協助學台語 —— 每一頁攏會當聽台語</div>
+    <div class="play"><button class="btn y" onclick="playPage('01')"><span class="ic">▶</span>聽 AI 用台語介紹園區</button></div>
+  </div></div>
+  <div class="ev"><b>12月5日（六）院兜講台語</b><span>14:00–17:00｜創意市集＆趣味手作、精彩表演、台灣俗語謎、園區寫生</span></div>
+  <div class="tiles">
+    <button class="tile" onclick="go('park')"><div class="em">🏡</div><div><b>台語文創意園區介紹</b><span>園區的由來佮使命</span></div></button>
+    <button class="tile" onclick="go('venues')"><div class="em">🏛️</div><div><b>各場館介紹</b><span>圖片、文字加台語語音</span></div></button>
+    <button class="tile" onclick="go('family')"><div class="em">👨‍👩‍👧</div><div><b>台語家庭推薦及加入</b><span>文化部計畫｜推薦碼 CF115</span></div></button>
+    <button class="tile" onclick="go('line')"><div class="em">💬</div><div><b>咱兜的台語 LINE</b><span>掃 QR code 加入，逐工學台語</span></div></button>
+    <button class="tile" onclick="go('ai')"><div class="em">🤖</div><div><b>台語 AI 自動化演示</b><span>朗讀、拍字、寫曲、AI 歌聲</span></div></button>
+    <button class="tile" onclick="go('talk')"><div class="em">🗣️</div><div><b>跟 AI 講兩句台語</b><span>點問題，AI 用台語回答</span></div></button>
+  </div>
+</section>
+
+<!-- PARK -->
+<section class="page" id="p-park">
+  <div class="ph"><div class="bg" style="background-image:url(img/entrance.jpg)"></div><h2>台語文創意園區介紹</h2></div>
+  <div class="bar"><button class="btn g" onclick="playPage('01')">▶ 聽台語</button><button class="btn o" onclick="stopAudio()">■ 停</button><span class="note">點任何一句，就唸彼句</span></div>
+  <div class="lines" id="L01"></div>
+</section>
+
+<!-- VENUES -->
+<section class="page" id="p-venues">
+  <div class="ph"><div class="bg" style="background-image:url(img/venues/01_1.jpg)"></div><h2>各場館介紹</h2></div>
+  <div class="bar"><button class="btn g" onclick="playPage('02')">▶ 全部聽</button><button class="btn o" onclick="stopAudio()">■ 停</button><span class="note">展覽內容會更換，以園區現場公告為準</span></div>
+  <div class="vgrid" id="V02"></div>
+</section>
+
+<!-- FAMILY -->
+<section class="page" id="p-family">
+  <div class="ph"><div class="bg" style="background-image:url(img/entrance.jpg)"></div><h2>台語家庭推薦及加入</h2></div>
+  <div class="bar"><button class="btn g" onclick="playPage('03')">▶ 聽台語</button><button class="btn o" onclick="stopAudio()">■ 停</button></div>
+  <div class="lines" id="L03"></div>
+  <div class="cols">
+    <div class="box"><h3>網路推薦碼</h3><div class="code">CF115</div><p class="note" style="text-align:center">註冊時填這組，園區會當協助你後續服務</p></div>
+    <div class="box"><h3>怎樣報名</h3><ol class="steps">
+      <li>家庭成員逐家去「台語家庭會員平台」註冊</li>
+      <li>推薦碼填 <b>CF115</b></li>
+      <li>審核通過了後，綁定家庭</li>
+      <li>參加活動、課程儉點數</li></ol>
+      <p><a class="btn g" href="https://tg.moc.gov.tw/signup" target="_blank" rel="noopener">去台語家庭會員平台 ↗</a></p></div>
+    <div class="box"><h3>點數佮獎勵</h3><table class="pt">
+      <tr><th>家庭類別</th><th>每人儉到 20 點</th></tr>
+      <tr><td>台語學習家庭</td><td>台語獎勵金 500 元＋以戶抽獎</td></tr>
+      <tr><td>台語文化家庭</td><td>拍成果短片，台語獎勵金 1,200 元</td></tr></table>
+      <p class="note">課程活動原則 1 點鐘算 1 點；實際以文化部最新公告為準。</p></div>
+    <div class="box"><h3>台語家庭小幫手（手機 App）</h3>
+      <p>翕身分證自動填資料、產生密碼、記住帳號，登入干焦愛輸入驗證碼。</p>
+      <p><a class="btn y" href="downloads/tg-helper.apk" download>下載 Android 版</a></p>
+      <p class="note">測試版；iPhone 版準備中。資料只存佇你家己的手機。</p></div>
+  </div>
+</section>
+
+<!-- LINE -->
+<section class="page" id="p-line">
+  <div class="ph"><div class="bg" style="background-image:url(img/hero.jpg)"></div><h2>咱兜的台語 LINE 推薦加入</h2></div>
+  <div class="bar"><button class="btn g" onclick="playPage('04')">▶ 聽台語</button><button class="btn o" onclick="stopAudio()">■ 停</button></div>
+  <div class="cols">
+    <div class="box"><img class="qr" src="img/qr_line.png" alt="咱兜的台語 快速註冊 QR code（台語文創意園區）"></div>
+    <div class="box"><h3>三步加入</h3><ol class="steps">
+      <li>用手機掃 QR code</li><li>干焦寫你的名</li><li>完成！自動加入「台語文創意園區」群組</li></ol>
+      <h3 style="margin-top:16px">加入了後試看覓</h3>
+      <p>佇 LINE 拍：<b style="font-size:26px">?你好</b><br>就會聽著「你好」的台語按怎講。</p></div>
+  </div>
+  <div class="lines" id="L04"></div>
+</section>
+
+<!-- AI -->
+<section class="page" id="p-ai">
+  <div class="ph"><div class="bg" style="background-image:url(img/hero.jpg)"></div><h2>台語 AI 自動化演示</h2></div>
+  <div class="bar"><button class="btn g" onclick="playPage('05')">▶ 聽台語</button><button class="btn o" onclick="stopAudio()">■ 停</button></div>
+  <div class="lines" id="L05"></div>
+  <h3 style="color:var(--g);margin:22px 4px 10px;font-size:24px">實際展示影片</h3>
+  <div class="vids">
+    <button class="vd" onclick="playVideo('videos/demo_park.mp4')"><div class="th">▶</div><div class="bd"><b>台語 AI 自動教學（園區展示）</b><span>2026/11/21｜5 分鐘</span></div></button>
+    <button class="vd" onclick="playVideo('videos/song_baguashan.mp4')"><div class="th">♪</div><div class="bd"><b>〈八卦山的台語聲〉AI 歌</b><span>照台語聲調譜曲＋AI 歌聲</span></div></button>
+    <button class="vd" onclick="playVideo('videos/demo_3lang.mp4')"><div class="th">▶</div><div class="bd"><b>美南差會展示（台英德日）</b><span>2026/11/23｜4 分半</span></div></button>
+    <button class="vd" onclick="playVideo('videos/demo_promo.mp4')"><div class="th">▶</div><div class="bd"><b>台語 AI 自動化宣傳版</b><span>Word 拍台文、填詞譜曲、AI 歌聲</span></div></button>
+  </div>
+</section>
+
+<!-- TALK -->
+<section class="page" id="p-talk">
+  <div class="ph"><div class="bg" style="background-image:url(img/lights.jpg)"></div><h2>跟 AI 講兩句台語</h2></div>
+  <div class="talk">
+    <div class="qs" id="QS"></div>
+    <div class="ai"><div class="face"><div class="av" id="AV">AI</div><div><b style="font-size:22px">台語 AI 小幫手</b><div class="note" style="margin:0">陽明交大／長問科技 台語語音</div></div></div>
+      <div class="bubble" id="BUB">你好！我是台語 AI。<br>點左爿的問題，我用台語回答你。</div>
+      <div class="hint">現場第二台電腦，閣會當對麥克風講話，AI 即時用台語回答！</div></div>
+  </div>
+</section>
+
+<footer>台語文創意園區｜彰化市卦山路 18 號（國立彰化生活美學館斜對面）｜開放：週二至週日 09:00–17:00（週一休館不休園）｜04-7287363<br>
+本網站台語語音：陽明交大研發、長問科技授權之台語語音合成｜台語文稿仍在校對中</footer>
+</main>
+
+<div id="vmodal"><video id="VID" controls playsinline></video><button class="btn w" onclick="closeVideo()">✕ 關閉</button></div>
+<div id="pmodal" onclick="if(event.target===this)closePhoto()"><img id="PIMG" alt=""><div class="cap" id="PCAP"></div>
+  <div class="row"><button class="btn w" onclick="stepPhoto(-1)">◀ 前一張</button><button class="btn w" onclick="closePhoto()">✕ 關閉</button><button class="btn w" onclick="stepPhoto(1)">後一張 ▶</button></div></div>
+
+<script src="content.js"></script>
+<script>
+const C = window.CONTENT;
+const $ = id => document.getElementById(id);
+// photos per venue card (index into CONTENT['02'].lines): img/venues/NN_1.jpg … NN_count.jpg
+const VENUE_PHOTOS = [3, 5, 4, 7, 6, 2, 2, 4, 1, 4, 1, 2, 2];
+const venuePhoto = (i, k) => `img/venues/${String(i + 1).padStart(2, '0')}_${k}.jpg`;
+const QUESTIONS = ['台語家庭是啥物？', '欲按怎報名台語家庭？', '咱兜的台語是啥物？', '園區佇佗位？', '園區敢著買票？', 'AI 會曉講台語無？',
+  '「謝謝」台語按怎講？', '「你好」台語按怎講？', '「早安」台語按怎講？', '「歡迎」台語按怎講？', 'AI 會當做啥物？', '欲按怎參加園區的活動？'];
+
+// ---------- audio ----------
+const audio = new Audio();
+let seq = null;           // {list, i, onLine}
+function stopAudio() { seq = null; audio.pause(); markLine(null); $('AV') && $('AV').classList.remove('talking'); }
+function playList(list, onLine) {
+  stopAudio(); seq = { list, i: 0, onLine }; next();
+}
+function next() {
+  if (!seq) return;
+  if (seq.i >= seq.list.length) { const s = seq; seq = null; markLine(null); s.onLine && s.onLine(-1); return; }
+  const item = seq.list[seq.i];
+  seq.onLine && seq.onLine(item.idx);
+  audio.src = item.wav; audio.play().catch(() => {});
+}
+audio.onended = () => { if (seq) { seq.i++; setTimeout(next, 250); } };
+audio.onerror = () => { if (seq) { seq.i++; next(); } };
+let marked = null;
+function markLine(el) { if (marked) marked.classList.remove('on'); marked = el; if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }
+
+function playPage(k, from = 0) {
+  const lines = C[k].lines.map((l, idx) => ({ wav: l.wav, idx })).slice(from);
+  playList(lines, idx => markLine(idx < 0 ? null : document.querySelector(`[data-k="${k}"][data-i="${idx}"]`)));
+}
+
+// ---------- build pages ----------
+function buildLines(k) {
+  const box = $('L' + k); if (!box) return;
+  box.innerHTML = C[k].lines.map((l, i) => `<button class="ln" data-k="${k}" data-i="${i}">${esc(l.t)}</button>`).join('');
+  box.onclick = e => { const b = e.target.closest('.ln'); if (b) playPage(k, +b.dataset.i); };
+}
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+['01', '03', '04', '05'].forEach(buildLines);
+
+$('V02').innerHTML = C['02'].lines.map((l, i) => {
+  const cut = l.t.indexOf('：'); const name = cut > 0 ? l.t.slice(0, cut) : '場館'; const body = cut > 0 ? l.t.slice(cut + 1) : l.t;
+  const n = VENUE_PHOTOS[i] || 0, img = n ? venuePhoto(i, 1) : '';
+  return `<div class="vc" data-k="02" data-i="${i}"><div class="im" data-src="${img}" data-n="${n}" data-name="${esc(name)}" onclick="openPhoto(${i},1)">${esc(name)}</div>
+    <div class="bd"><h3>${esc(name)}</h3><p>${esc(body)}</p></div>
+    <div class="ft"><button class="btn g" onclick="playPage('02',${i});seq&&(seq.list=seq.list.slice(0,1))">▶ 聽台語</button></div></div>`;
+}).join('');
+// show a photo only when the file exists (otherwise the green name card stays)
+document.querySelectorAll('.vc .im').forEach(d => { if (!d.dataset.src) return; const im = new Image(); im.onload = () => { d.style.backgroundImage = `url(${d.dataset.src})`; d.innerHTML = +d.dataset.n > 1 ? `<span class="cnt">📷 ${d.dataset.n} 張</span>` : ''; }; im.src = d.dataset.src; });
+
+// ---------- photo viewer ----------
+let pv = null; // {i, k}
+function openPhoto(i, k) { const n = VENUE_PHOTOS[i] || 0; if (!n) return; pv = { i, k }; showPhoto(); $('pmodal').style.display = 'flex'; }
+function showPhoto() { const n = VENUE_PHOTOS[pv.i], name = C['02'].lines[pv.i].t.split('：')[0]; $('PIMG').src = venuePhoto(pv.i, pv.k); $('PCAP').textContent = `${name}（${pv.k} / ${n}）`; }
+function stepPhoto(d) { if (!pv) return; const n = VENUE_PHOTOS[pv.i]; pv.k = (pv.k - 1 + d + n) % n + 1; showPhoto(); }
+function closePhoto() { pv = null; $('pmodal').style.display = 'none'; $('PIMG').removeAttribute('src'); }
+addEventListener('keydown', e => { if (!pv) return; if (e.key === 'ArrowLeft') stepPhoto(-1); else if (e.key === 'ArrowRight') stepPhoto(1); else if (e.key === 'Escape') closePhoto(); });
+
+$('QS').innerHTML = QUESTIONS.map((q, i) => `<button class="q" data-i="${i}">${esc(q)}</button>`).join('');
+$('QS').onclick = e => {
+  const b = e.target.closest('.q'); if (!b) return;
+  document.querySelectorAll('.q.on').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  const i = +b.dataset.i, l = C['06'].lines[i];
+  $('BUB').textContent = l.t; $('AV').classList.add('talking');
+  playList([{ wav: l.wav, idx: i }], idx => { if (idx < 0) $('AV').classList.remove('talking'); });
+  if (innerWidth < 760) $('BUB').scrollIntoView({ block: 'center', behavior: 'smooth' });
+};
+
+// ---------- video ----------
+function playVideo(src) { stopAudio(); $('VID').src = src; $('vmodal').style.display = 'flex'; $('VID').play().catch(() => {}); }
+function closeVideo() { $('VID').pause(); $('VID').removeAttribute('src'); $('VID').load(); $('vmodal').style.display = 'none'; }
+
+// ---------- router ----------
+const PAGES = ['home', 'park', 'venues', 'family', 'line', 'ai', 'talk'];
+function go(p) { location.hash = '#/' + p; }
+function route() {
+  const p = (location.hash.match(/^#\/(\w+)/) || [])[1];
+  const page = PAGES.includes(p) ? p : 'home';
+  stopAudio(); closeVideo();
+  document.querySelectorAll('.page').forEach(s => s.classList.toggle('on', s.id === 'p-' + page));
+  scrollTo({ top: 0 });
+}
+addEventListener('hashchange', route); route();
+
+// ---------- kiosk mode (?kiosk=1): no touch for 2 minutes -> back to the home page ----------
+if (/[?&]kiosk=1/.test(location.search)) {
+  let t; const reset = () => { clearTimeout(t); t = setTimeout(() => { if (!seq && $('vmodal').style.display !== 'flex') { closePhoto(); go('home'); } else reset(); }, 120000); };
+  ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, reset, { passive: true })); reset();
+  document.addEventListener('contextmenu', e => e.preventDefault());
+}
+</script>
+</body></html>
