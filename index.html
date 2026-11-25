@@ -32,6 +32,13 @@ main{max-width:1180px;margin:0 auto;padding:0 18px 40px}
 .btn{border:0;border-radius:14px;padding:12px 22px;font-weight:700;font-size:20px}
 .btn.g{background:var(--g);color:#fff}.btn.y{background:var(--gold);color:#2f2200}.btn.w{background:#fff;color:var(--g)}.btn.o{background:transparent;border:2px solid var(--g);color:var(--g)}
 .btn .ic{display:inline-block;margin-right:6px}
+.addline{display:flex;align-items:center;gap:14px;background:#06c755;color:#fff;text-decoration:none;border-radius:18px;padding:16px 22px;margin:4px 0 16px;box-shadow:0 3px 12px rgba(6,199,85,.35)}
+body.kiosk .addline{display:none}
+.addline .ic{font-size:34px}.addline b{display:block;font-size:24px}.addline small{font-size:16px;opacity:.95}
+.fh{color:var(--g);font-size:26px;margin:24px 0 2px}.fh small{font-size:15px;color:var(--muted);font-weight:400}
+.feat{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin:10px 0 20px}
+.fc{background:var(--card);border-radius:16px;padding:14px 18px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.fc h4{margin:0 0 6px;font-size:20px;color:var(--g)}.fc ul{margin:0;padding-left:1.1em;font-size:17px;line-height:1.6}.fc b{color:var(--brick)}
 /* tiles */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;margin:8px 0 24px}
 .tile{display:flex;gap:16px;align-items:center;text-align:left;border:0;background:var(--card);border-radius:18px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);transition:transform .15s}
@@ -176,12 +183,25 @@ footer{margin-top:30px;padding:18px;border-top:1px solid #e2ddd0;color:var(--mut
 <section class="page" id="p-line">
   <div class="ph"><div class="bg" style="background-image:url(img/hero.jpg)"></div><h2>咱兜的台語 LINE 推薦加入</h2></div>
   <div class="bar"><button class="btn g" onclick="playPage('04')">▶ 聽台語</button><button class="btn o" onclick="stopAudio()">■ 停</button></div>
+  <a class="addline" href="https://line.me/R/ti/p/@509ymzdy" target="_blank" rel="noopener"><span class="ic">💬</span><span><b>直接加入咱兜的台語（加好友）</b><small>用手機看這頁的人，按這裡就好，不用掃 QR code</small></span></a>
   <div class="cols">
     <div class="box"><img class="qr" src="img/qr_line.png" alt="咱兜的台語 快速註冊 QR code（台語文創意園區）"></div>
     <div class="box"><h3>三步加入</h3><ol class="steps">
-      <li>用手機掃 QR code</li><li>干焦寫你的名</li><li>完成！自動加入「台語文創意園區」群組</li></ol>
+      <li>用手機掃 QR code（或按上面綠色按鈕）</li><li>干焦寫你的名</li><li>完成！自動加入「台語文創意園區」群組</li></ol>
       <h3 style="margin-top:16px">加入了後試看覓</h3>
       <p>佇 LINE 拍：<b style="font-size:26px">?你好</b><br>就會聽著「你好」的台語按怎講。</p></div>
+  </div>
+  <h3 class="fh">咱兜的台語 功能介紹 <small>v5.16</small></h3>
+  <p class="note">在 LINE 對話框輸入左邊的字就能使用</p>
+  <div class="feat">
+    <div class="fc"><h4>🗂️ 快速選單</h4><ul><li><b>選單</b>／<b>開始</b> → 開啟圖形選單</li><li><b>平安</b> → 查看今日學習狀態</li><li><b>統計</b> → 完整學習統計</li></ul></div>
+    <div class="fc"><h4>🔊 台語語音合成</h4><ul><li><b>？今天去哪裡吃飯</b> → 聽台語</li><li>支援中／英／日／韓／泰文輸入</li><li>語音直接回覆，不用等</li></ul></div>
+    <div class="fc"><h4>📝 臺羅拼音學習</h4><ul><li><b>拼今天天氣很好</b> → 臺羅對照＋語音</li><li><b>聲調</b> → 臺羅聲調入門說明</li></ul></div>
+    <div class="fc"><h4>🤖 台語 AI 對話</h4><ul><li><b>AI對話</b> → 開始台語 AI 陪聊</li><li>每日 3 次</li><li><b>結束對話</b> → 離開 AI 模式</li></ul></div>
+    <div class="fc"><h4>🎤 台語發音評分</h4><ul><li><b>評分</b> → 開始發音評分</li><li>傳語音後等待處理，再傳任意訊息看結果</li><li><b>取消評分</b> → 結束評分模式</li><li><b>評分成績</b> → 查詢個人成績</li></ul></div>
+    <div class="fc"><h4>📖 學習功能（6 種）</h4><ul><li><b>每日台語</b>／<b>看圖片</b>／<b>聽台語</b></li><li><b>看影片</b>／<b>聽電台</b>／<b>讀冊</b></li></ul></div>
+    <div class="fc"><h4>📍 打卡功能</h4><ul><li><b>台語打卡</b> → 友善環境打卡</li><li><b>台語家庭</b> → 家庭打卡</li></ul></div>
+    <div class="fc"><h4>📘 意識培育</h4><ul><li><b>意識培育</b> → 台語家庭意識培育手冊</li></ul></div>
   </div>
   <div class="lines" id="L04"></div>
 </section>
@@ -308,6 +328,7 @@ addEventListener('hashchange', route); route();
 
 // ---------- kiosk mode (?kiosk=1): no touch for 2 minutes -> back to the home page ----------
 if (/[?&]kiosk=1/.test(location.search)) {
+  document.body.classList.add("kiosk"); // exhibit PC: no LINE add-friend button (visitors scan the QR with their phones)
   let t; const reset = () => { clearTimeout(t); t = setTimeout(() => { if (!seq && $('vmodal').style.display !== 'flex') { closePhoto(); go('home'); } else reset(); }, 120000); };
   ['pointerdown', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, reset, { passive: true })); reset();
   document.addEventListener('contextmenu', e => e.preventDefault());
